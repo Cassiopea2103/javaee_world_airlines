@@ -12,7 +12,7 @@
     <nav>
         <a href="#">Book a Flight</a>
         <a href="#">Destinations</a>
-        <a href="#services">Offers</a>
+        <a href="#services">Check offers</a>
         <a href="#contact">Contact</a>
     </nav>
 </header>
