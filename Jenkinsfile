@@ -17,7 +17,7 @@ pipeline {
 
 		stage ('Checkout github repository') {
 			steps {
-				git branch : 'main' ,
+				git branch : 'master' ,
 				credentialsId : 'github' ,
 				url : 'https://github.com/Cassiopea2103/javaee_world_airlines'
 			}
