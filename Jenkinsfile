@@ -12,7 +12,7 @@ pipeline {
 		APP_NAME = "world_airlines"
 		RELEASE = "1.0.0"
 		RELEASE_TAG = "${RELEASE}-${BUILD_NUMBER}" // include jenkins build number in image tag
-		DOCKERHUB = credientials('dockerhub')
+		DOCKERHUB = credentials('dockerhub')
 	}
 
 	stages {
