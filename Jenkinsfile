@@ -76,13 +76,13 @@ pipeline {
 						sh "docker build -t ${IMAGE_NAME}:${RELEASE_TAG} ."
 
 						// login to dockerhub :
-						sh "printf '%s' ${DOCKERHUB_PASSWWORD} | docker login -u ${DOCKERHUB_USERNAME} --password-stdin"
+						sh "printf '%s' ${DOCKERHUB_PASSWORD} | docker login -u ${DOCKERHUB_USERNAME} --password-stdin"
 
 						// create both release and latest tags for the image :
 						sh "docker tag ${IMAGE_NAME}:${RELEASE_TAG} ${IMAGE_NAME}:latest"
 
 						// push image to dockerhub with both tags :
-						sh "docker push ${IMAGE_NAME}:{RELEASE_TAG}"
+						sh "docker push ${IMAGE_NAME}:${RELEASE_TAG}"
 						sh "docker push ${IMAGE_NAME}:latest"
 					}
 				}
