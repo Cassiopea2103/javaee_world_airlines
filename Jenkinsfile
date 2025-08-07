@@ -96,7 +96,7 @@ pipeline {
 					def IMAGE_NAME = "${DOCKERHUB_USERNAME}/${APP_NAME}:latest
 					sh """
 						docker run --rm \
-						-v /var/run/docker.sockL/var/run/docker.sock \
+						-v /var/run/docker.sock : /var/run/docker.sock \
 						aquasec/trivy:latest image ${IMIAGE_NAME} \
 						--no-progress \
 						--scanners vuln \
@@ -114,7 +114,7 @@ pipeline {
 					sh 'docker rmi $(docker images -q) || true'
 
 					// logout from dockerhub :
-					sh 'docker logout' 
+					sh 'docker logout'
 				}
 			}
 		}
