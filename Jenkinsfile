@@ -88,5 +88,35 @@ pipeline {
 				}
 			}
 		}
+
+		stage ("Trivy image scan") {
+			steps {
+				script {
+
+					def IMAGE_NAME = "${DOCKERHUB_USERNAME}/${APP_NAME}:latest
+					sh """
+						docker run --rm \
+						-v /var/run/docker.sockL/var/run/docker.sock \
+						aquasec/trivy:latest image ${IMIAGE_NAME} \
+						--no-progress \
+						--scanners vuln \
+						--severity HIGH,CRITICAL \
+						--exit-code 1 \
+					"""
+				}
+			}
+		}
+
+	    stage ("Docker cleanup & logout" ) {
+			steps {
+				script {
+					// remove all local docker images :
+					sh 'docker rmi $(docker images -q) || true'
+
+					// logout from dockerhub :
+					sh 'docker logout' 
+				}
+			}
+		}
 	}
 }
