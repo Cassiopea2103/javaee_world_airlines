@@ -70,7 +70,7 @@ pipeline {
 					    passwordVariable : 'DOCKERHUB_PASSWORD'
 					)]) {
 						// define image name variable :
-						def IMAGE_NAME = "${DOCKERHUB_USERNAME}-${APP_NAME}"
+						def IMAGE_NAME = "${DOCKERHUB_USERNAME}/${APP_NAME}"
 
 						// build docker image with release tag:
 						sh "docker build -t ${IMAGE_NAME}:${RELEASE_TAG} ."
