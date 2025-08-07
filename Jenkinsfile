@@ -90,7 +90,7 @@ pipeline {
 					def IMAGE_NAME = "${DOCKERHUB_USR}/${APP_NAME}:latest"
 					sh """
 						docker run --rm \
-						-v /var/run/docker.sock : /var/run/docker.sock \
+						-v /var/run/docker.sock:/var/run/docker.sock \
 						aquasec/trivy:latest image ${IMAGE_NAME} \
 						--no-progress \
 						--scanners vuln \
