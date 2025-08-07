@@ -93,7 +93,7 @@ pipeline {
 			steps {
 				script {
 
-					def IMAGE_NAME = "${DOCKERHUB_USERNAME}/${APP_NAME}:latest
+					def IMAGE_NAME = "${DOCKERHUB_USERNAME}/${APP_NAME}:latest"
 					sh """
 						docker run --rm \
 						-v /var/run/docker.sock : /var/run/docker.sock \
