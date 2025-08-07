@@ -8,6 +8,12 @@ pipeline {
 		maven 'maven3'
 	}
 
+	environment {
+		APP_NAME = "world_airlines"
+		RELEASE = "1.0.0"
+		RELEASE_TAG = "${RELEASE}-${BUILD_NUMBER}" // include jenkins build number in image tag
+	}
+
 	stages {
 		stage('Workspace cleanup') {
 			steps {
@@ -51,6 +57,34 @@ pipeline {
 			steps {
 				script {
 					waitForQualityGate abortPipeline: true , credentialsId : 'sonarqube_jenkins_token'
+				}
+			}
+		}
+
+		stage ("Docker build & push" ) {
+			steps {
+				script {
+					withCredentials ([usernamePassword(
+					    credentialsId : 'dockerhub' ,
+					    usernameVariable : 'DOCKERHUB_USERNAME' ,
+					    passwordVariable : 'DOCKERHUB_PASSWORD'
+					)]) {
+						// define image name variable :
+						def IMAGE_NAME = "${DOCKERHUB_USERNAME}-${APP_NAME}"
+
+						// build docker image with release tag:
+						sh "docker build -t ${IMAGE_NAME}:${RELEASE_TAG} ."
+
+						// login to dockerhub :
+						sh "printf '%s' ${DOCKERHUB_PASSWWORD} | docker login -u ${DOCKERHUB_USERNAME} --password-stdin"
+
+						// create both release and latest tags for the image :
+						sh "docker tag ${IMAGE_NAME}:${RELEASE_TAG} ${IMAGE_NAME}:latest"
+
+						// push image to dockerhub with both tags :
+						sh "docker push ${IMAGE_NAME}:{RELEASE_TAG}"
+						sh "docker push ${IMAGE_NAME}:latest"
+					}
 				}
 			}
 		}
